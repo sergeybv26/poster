@@ -8,7 +8,7 @@ class Place(models.Model):
     uid = models.UUIDField(primary_key=True, default=uuid4)
     title = models.CharField(max_length=512, unique=True, verbose_name='Наименование')
     description_short = models.CharField(max_length=512, blank=True, null=True, verbose_name='Краткое описание')
-    description_long = models.TextField(verbose_name='Полное описание')
+    description_long = models.TextField(blank=True, null=True, verbose_name='Полное описание')
     latitude = models.FloatField(verbose_name='Широта')
     longitude = models.FloatField(verbose_name='Долгота')
 
@@ -28,8 +28,8 @@ class PlaceImage(models.Model):
     """Модель сущности Изображение достопримечательности"""
     uid = models.UUIDField(primary_key=True, default=uuid4)
     place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='placeimg', verbose_name='Место')
-    image = models.ImageField(upload_to='places', verbose_name='Изображение')
-    order = models.IntegerField(verbose_name='Ранг изображения')
+    image = models.ImageField(upload_to='places', blank=True, verbose_name='Изображение')
+    order = models.IntegerField(default=0, blank=True, verbose_name='Ранг изображения')
 
     @property
     def get_absolute_image_url(self):
@@ -41,3 +41,4 @@ class PlaceImage(models.Model):
     class Meta:
         verbose_name = 'Изображение'
         verbose_name_plural = 'Изображения'
+        ordering = ['order']
