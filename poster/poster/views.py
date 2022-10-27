@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 
 from places.models import Place
 
@@ -30,3 +31,15 @@ def main(request):
     }
 
     return render(request, 'index.html', context=context)
+
+
+def places(request, pk):
+    """
+    Представление JSON API.
+    :param request: запрос
+    :param pk: id достопримечательности
+    :return: HTTP Response - достопримечательность
+    """
+    place = get_object_or_404(Place, pk=pk)
+
+    return HttpResponse(place.title)
