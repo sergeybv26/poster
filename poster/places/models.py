@@ -13,6 +13,10 @@ class Place(models.Model):
     latitude = models.FloatField(verbose_name='Широта')
     longitude = models.FloatField(verbose_name='Долгота')
 
+    def get_images(self):
+        """Получение изображений для достопримечательности"""
+        return self.placeimg.select_related()
+
     def __str__(self):
         return f'{self.title}'
 
