@@ -22,7 +22,7 @@ from poster import views
 
 urlpatterns = [
     path('', views.main),
-    path('places/<pk>/', views.places),
+    path('places/<pk>/', views.places, name='place_api'),
     path('admin/', admin.site.urls),
 ]
 

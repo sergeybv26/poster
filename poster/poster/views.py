@@ -1,12 +1,32 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 
 from places.models import Place
 
 
+def get_geojson(item):
+    """
+    Формирует и возвращает Geo JSON для объекта достопримечательности
+    :param item: экземпляр класса Place
+    :return: Geo JSON
+    """
+    geojson = {
+        'title': item.title,
+        'imgs': [img.get_absolute_image_url for img in item.get_images()],
+        'description_short': item.description_short,
+        'description_long': item.description_long,
+        'coordinates': {
+            'lng': item.longitude,
+            'lat': item.latitude
+        }
+    }
+    return geojson
+
+
 def main(request):
     """Представление для отображения главной страницы"""
-    places = Place.objects.all()
+    queryset = Place.objects.all()
 
     geojson = {
         'type': 'FeatureCollection',
@@ -20,10 +40,9 @@ def main(request):
                 'properties': {
                     'title': item.title,
                     'placeId': item.uid,
-                    'detailsUrl': 'static/places/moscow_legends.json'
-                    if item.title == 'Экскурсионная компания «Легенды Москвы»' else 'static/places/roofs24.json'
+                    'detailsUrl': reverse('place_api', args=[item.uid])
                 }
-            } for item in places
+            } for item in queryset
         ]
     }
     context = {
@@ -41,5 +60,6 @@ def places(request, pk):
     :return: HTTP Response - достопримечательность
     """
     place = get_object_or_404(Place, pk=pk)
+    geojson = get_geojson(place)
 
-    return HttpResponse(place.title)
+    return JsonResponse(geojson)
