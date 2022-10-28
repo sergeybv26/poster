@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from django.db import models
+from tinymce.models import HTMLField
 
 
 class Place(models.Model):
@@ -8,7 +9,7 @@ class Place(models.Model):
     uid = models.UUIDField(primary_key=True, default=uuid4)
     title = models.CharField(max_length=512, unique=True, verbose_name='Наименование')
     description_short = models.CharField(max_length=512, blank=True, null=True, verbose_name='Краткое описание')
-    description_long = models.TextField(blank=True, null=True, verbose_name='Полное описание')
+    description_long = HTMLField(blank=True, null=True, verbose_name='Полное описание')
     latitude = models.FloatField(verbose_name='Широта')
     longitude = models.FloatField(verbose_name='Долгота')
 
