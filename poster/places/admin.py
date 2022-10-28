@@ -28,6 +28,7 @@ class PlaceAdmin(admin.ModelAdmin):
     list_display = ('title',)
     exclude = ('uid',)
     inlines = [ImageInlineAdmin, ]
+    search_fields = ['title']
 
 
 @admin.register(PlaceImage)
