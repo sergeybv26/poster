@@ -16,6 +16,8 @@ RUN apk update && apk add libpq postgresql-dev gcc python3-dev musl-dev postgres
 COPY . .
 RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
+RUN pip3 install psycopg2-binary
+RUN pip3 install gunicorn
 
 COPY ./entrypoint.sh $POSTER_HOME
 RUN sed -i 's/\r$//g' $POSTER_HOME/entrypoint.sh
