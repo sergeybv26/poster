@@ -1,0 +1,39 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:13.0-alpine
+    container_name: db
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./poster/.env.db
+  web:
+    build: ./poster
+    restart: always
+    container_name: web
+    command: gunicorn poster.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/poster/web/static
+      - media_volume:/home/poster/web/media
+    expose:
+      - 8000
+    env_file:
+      - ./poster/.env
+    depends_on:
+      - db
+  nginx:
+    build: ./nginx
+    restart: always
+    volumes:
+      - static_volume:/home/poster/web/static
+      - media_volume:/home/poster/web/media
+    ports:
+      - 80:80
+    depends_on:
+      - web
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
