@@ -9,8 +9,10 @@ from places.models import Place, PlaceImage
 class ImageInlineAdmin(SortableInlineAdminMixin, admin.TabularInline):
     model = PlaceImage
     exclude = ('uid',)
+    fields = ('image', 'image_preview', 'order')
     readonly_fields = ('image_preview',)
     extra = 1
+    min_num = 0
     ordering = ['order']
 
     def image_preview(self, obj):
@@ -27,7 +29,7 @@ class ImageInlineAdmin(SortableInlineAdminMixin, admin.TabularInline):
 class PlaceAdmin(admin.ModelAdmin):
     list_display = ('title',)
     exclude = ('uid',)
-    inlines = [ImageInlineAdmin, ]
+    inlines = (ImageInlineAdmin, )
     search_fields = ['title']
 
 
