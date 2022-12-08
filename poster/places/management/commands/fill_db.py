@@ -26,19 +26,6 @@ def get_place_data(link, img_flag=False):
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        # Создаем супер-пользователя
-        try:
-            user = User.objects.get(username=settings.ADMIN_USERNAME)
-            user.delete()
-        except User.DoesNotExist:
-            print('Database is empty')
-
-        User.objects.create_superuser(
-            username=settings.ADMIN_USERNAME,
-            email=settings.ADMIN_EMAIL,
-            password=settings.ADMIN_PASSWORD
-        )
-
         # Загрузка данных о местах из JSON файлов.
         Place.objects.all().delete()
         PlaceImage.objects.all().delete()

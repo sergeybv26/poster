@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.idea
+poster/media
+
+poster/static/.gitbook
+poster/static/.editorconfig
+poster/static/*.md
