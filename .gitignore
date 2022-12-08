@@ -130,3 +130,7 @@ dmypy.json
 
 .idea
 poster/media
+
+poster/static/.gitbook
+poster/static/.editorconfig
+poster/static/*.md

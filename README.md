@@ -35,89 +35,73 @@ https://git-scm.com/downloads
 ```shell
 $ git clone https://github.com/sergeybv26/poster.git
 ```
+После копирования проекта из репозитория появится директория poster
 
 ### Создание и активация виртуального окружения
 ```shell
+$ cd poster/
 $ python3 -m venv env
 $ source env/bin/activate
+```
+Пример строки-приглашения после выполнения команды:
+```shell
+(env) user@user-pc:~/poster
 ```
 
 ### Установка зависимостей
 ```shell
 $ pip3 install -r requirements.txt
 ```
+Установка зависимостей должна завершиться сообщением: "Successfully installed ..."
 ### Создание файла с переменными окружения
-* Создать файл .env и записать в него параметры из файла .env.sample
-* Создать файл .env.db и записать в него параметры из файла .env.db.sample. Имя пользователя, пароль и наименование базы должны совпадать с записанными в файле .env.
-### Применение миграций
+Переменные окружения для настройки проекта:
+* ```SECRET_KEY``` - Секретный ключ Django
+* ```DEBUG``` - Флаг отладки (True или False)
+
+Создать файл .env и записать в него параметры из файла .env.sample
 ```shell
 $ cd poster/
+$ touch .env
+$ nano .env
+```
+### Применение миграций
+```shell
 $ python3 manage.py migrate
 ```
+### Создание суперпользователя
+Для работы в административной панели необходимо создать учетную запись суперпользователя:
+```shell
+$ python3 manage.py createsuperuser
+```
+После запуска команды необходимо ввести имя пользователя, адрес электронной почты и пароль с подтверждением
 ### Запуск сайта
 ```shell
 $ python3 manage.py runserver
 ```
 
-## Запуск проекта в Docker
-### Установка Docker
-#### Обновление информации о репозиториях
-```shell
- $ sudo apt-get update
- $ sudo apt-get install \
-    ca-certificates \
-    curl \
-    gnupg \
-    lsb-releas
-```
-#### Добавление официального GPG ключа Docker
-```shell
-$ sudo mkdir -p /etc/apt/keyrings
-$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-```
-#### Добавление репозитория Docker
-```shell
-$ echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-#### Установка Docker
-```shell
-$ sudo apt-get update
-$ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-```
-### Создание файла с переменными окружения
-* Создать файл .env и записать в него параметры из файла .env.sample
-* Создать файл .env.db и записать в него параметры из файла .env.db.sample. Имя пользователя, пароль и наименование базы должны совпадать с записанными в файле .env.
-### Запускаем проект в Docker
-```shell
-$ cd poster/
-$ chmod +x poster/entrypoint.sh
-$ sudo docker-compose up --build
-```
-
 ## Пользование сайтом
+После локального запуска сервера можно им пользоваться, перейдя по ссылке http://localhost:8000/
 На сайте доступны две страницы: главная и панель администратора.
-Главная страница расположена по адресу: http://your_host:8000/
+Главная страница расположена по адресу: http://localhost:8000/
 
-Панель администратора расположена по адресу: http://your_host:8000/admin/
+Панель администратора расположена по адресу: http://localhost:8000/admin/
 
 На главной странице отображается карта Москвы с точками интереса. При клике по точке выводится подробное описание с фотографиями.
 
 В панели администратора имеется возможность добавлять новые точки интереса и редактировать существующие.
 
 ## Демо-версия сайта
-Демо-версия сайта размещена по адресу: http://185.20.224.111/
+Демо-версия сайта размещена по адресу: https://sergeysukha.pythonanywhere.com/
 
-Административная панель демо-версии размещена по адресу: http://185.20.224.111/admin/
+Административная панель демо-версии размещена по адресу: https://sergeysukha.pythonanywhere.com/admin/
 
 ## Автоматическая загрузка данных в базу
 ### Порядок загрузки данных
-Для автоматической загрузки данных в базу необходимо выполнить следующее:
-* записать список ссылок на JSON файлы в переменную ```JSON_LINKS```, расположеннуюв модуле ```common.variables```
-* в терминале выполнить команду
+Для автоматической загрузки данных в базу необходимо выполнить в терминале выполнить команду заполнения данных fill_db.
+Данная команда принимает в качестве параметра ссылку на файл JSON.
+Пример использования команды:
 ```shell
-$ python3 manage.py fill_db
+$ python3 manage.py fill_db https://raw.githubusercontent.com/devmanorg/where-to-go-places/master/places/Антикафе%20Bizone.json
 ```
 ### Требуемый формат файла JSON
 ```json
@@ -139,6 +123,3 @@ $ python3 manage.py fill_db
     }
 }
 ```
-
-https://sergeysukha.pythonanywhere.com
-Создать media/places
