@@ -26,11 +26,22 @@
 * ```ADMIN_PASSWORD``` - пароль пользователя
 
 ## Запуск проекта
+### Клонирование репозитория
+Для клонирования репозитория необходимо установить git:
+```shell
+https://git-scm.com/downloads
+```
+Чтобы выполнить клонирование проекта из репозитория необходимо выполнить команду:
+```shell
+$ git clone https://github.com/sergeybv26/poster.git
+```
+
 ### Создание и активация виртуального окружения
 ```shell
 $ python3 -m venv env
 $ source env/bin/activate
 ```
+
 ### Установка зависимостей
 ```shell
 $ pip3 install -r requirements.txt
