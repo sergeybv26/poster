@@ -128,3 +128,6 @@ $ python3 manage.py fill_db
     }
 }
 ```
+
+https://sergeysukha.pythonanywhere.com
+Создать media/places
