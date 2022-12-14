@@ -3,7 +3,6 @@ from urllib.parse import urlparse
 
 import requests
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.core.files import File
 from django.core.management import BaseCommand
 
@@ -27,8 +26,7 @@ def get_place_data(link, img_flag=False):
 class Command(BaseCommand):
     def handle(self, *args, **options):
         # Загрузка данных о местах из JSON файлов.
-        Place.objects.all().delete()
-        PlaceImage.objects.all().delete()
+
         link = options['link']
 
         place_json = get_place_data(link)
@@ -36,7 +34,7 @@ class Command(BaseCommand):
             os.makedirs(f'{settings.BASE_DIR}/media/places/')
         if isinstance(place_json, dict):
             print(f"Загрузка информации о месте: {place_json['title']}")
-            place, created = Place.objects.get_or_create(
+            place, _ = Place.objects.get_or_create(
                 title=place_json['title'],
                 description_short=place_json['description_short'],
                 description_long=place_json['description_long'],

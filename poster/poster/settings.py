@@ -29,7 +29,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env.bool('DEBUG', True)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
-print(ALLOWED_HOSTS)
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -77,7 +77,6 @@ WSGI_APPLICATION = 'poster.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-ENV_TYPE = os.getenv('ENV_TYPE')
 
 DATABASES = {
     'default': {
@@ -122,12 +121,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-if ENV_TYPE == 'prod':
-    STATIC_ROOT = BASE_DIR / 'static'
-else:
-    STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, "static"),
-    )
+STATIC_ROOT = BASE_DIR / 'static_root'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -137,7 +135,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
-
-ADMIN_USERNAME = os.getenv('ADMIN_USERNAME')
-ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
-ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
