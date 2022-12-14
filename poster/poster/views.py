@@ -1,4 +1,4 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
@@ -13,7 +13,7 @@ def get_geojson(item):
     """
     geojson = {
         'title': item.title,
-        'imgs': [img.get_absolute_image_url for img in item.get_images()],
+        'imgs': [img.image.url for img in item.images.all()],
         'description_short': item.description_short,
         'description_long': item.description_long,
         'coordinates': {
