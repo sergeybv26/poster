@@ -21,8 +21,8 @@ from django.urls import path, include
 from poster import views
 
 urlpatterns = [
-    path('', views.main),
-    path('places/<pk>/', views.places, name='place_api'),
+    path('', views.get_main_page),
+    path('places/<pk>/', views.get_places, name='place_api'),
     path('tinymce/', include('tinymce.urls')),
     path('admin/', admin.site.urls),
 ]
