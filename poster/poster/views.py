@@ -5,54 +5,35 @@ from django.urls import reverse
 from places.models import Place
 
 
-def get_geojson(item):
-    """
-    Формирует и возвращает Geo JSON для объекта достопримечательности
-    :param item: экземпляр класса Place
-    :return: Geo JSON
-    """
-    geojson = {
-        'title': item.title,
-        'imgs': [img.image.url for img in item.images.all()],
-        'description_short': item.description_short,
-        'description_long': item.description_long,
-        'coordinates': {
-            'lng': item.longitude,
-            'lat': item.latitude
-        }
-    }
-    return geojson
-
-
-def main(request):
+def get_main_page(request):
     """Представление для отображения главной страницы"""
-    queryset = Place.objects.all()
+    places = Place.objects.all()
 
-    geojson = {
+    places_info = {
         'type': 'FeatureCollection',
         'features': [
             {
                 'type': 'Feature',
                 'geometry': {
                     'type': 'Point',
-                    'coordinates': [item.longitude, item.latitude]
+                    'coordinates': [place.longitude, place.latitude]
                 },
                 'properties': {
-                    'title': item.title,
-                    'placeId': item.uid,
-                    'detailsUrl': reverse('place_api', args=[item.uid])
+                    'title': place.title,
+                    'placeId': place.uid,
+                    'detailsUrl': reverse('place_api', args=[place.uid])
                 }
-            } for item in queryset
+            } for place in places
         ]
     }
     context = {
-        'geojson': geojson
+        'geojson': places_info
     }
 
     return render(request, 'index.html', context=context)
 
 
-def places(request, pk):
+def get_places(request, pk):
     """
     Представление JSON API.
     :param request: запрос
@@ -60,6 +41,15 @@ def places(request, pk):
     :return: HTTP Response - достопримечательность
     """
     place = get_object_or_404(Place, pk=pk)
-    geojson = get_geojson(place)
+    place_info = {
+        'title': place.title,
+        'imgs': [img.image.url for img in place.images.all()],
+        'description_short': place.description_short,
+        'description_long': place.description_long,
+        'coordinates': {
+            'lng': place.longitude,
+            'lat': place.latitude
+        }
+    }
 
-    return JsonResponse(geojson)
+    return JsonResponse(place_info, json_dumps_params={'indent': 2, 'ensure_ascii': False})

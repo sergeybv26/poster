@@ -26,7 +26,7 @@ class PlaceImage(models.Model):
     uid = models.UUIDField(primary_key=True, default=uuid4)
     place = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='images', verbose_name='Место')
     image = models.ImageField(upload_to='places', verbose_name='Изображение')
-    order = models.IntegerField(default=0, blank=True, verbose_name='Ранг изображения')
+    order = models.IntegerField(default=0, verbose_name='Ранг изображения')
 
     def __str__(self):
         return f'{self.order} {self.place}'

@@ -81,11 +81,11 @@ $ python3 manage.py runserver
 
 ## Автоматическая загрузка данных в базу
 ### Порядок загрузки данных
-Для автоматической загрузки данных в базу необходимо выполнить в терминале выполнить команду заполнения данных fill_db.
+Для загрузки данных о местах в базу необходимо в терминале выполнить команду заполнения данных load_place.
 Данная команда принимает в качестве параметра ссылку на файл JSON.
 Пример использования команды:
 ```shell
-$ python3 manage.py fill_db https://raw.githubusercontent.com/devmanorg/where-to-go-places/master/places/Антикафе%20Bizone.json
+$ python3 manage.py load_place https://raw.githubusercontent.com/devmanorg/where-to-go-places/master/places/Антикафе%20Bizone.json
 ```
 ### Требуемый формат файла JSON
 ```json
