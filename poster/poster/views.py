@@ -33,7 +33,7 @@ def get_main_page(request):
     return render(request, 'index.html', context=context)
 
 
-def get_places(request, pk):
+def get_place(request, pk):
     """
     Представление JSON API.
     :param request: запрос
