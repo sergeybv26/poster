@@ -31,7 +31,7 @@ class Command(BaseCommand):
             print(f"Обновлена информация о месте: {place_info.get('title')}. Загрузка фотографий не выполнялась")
             return None
 
-        self.create_images(place_info, place, place_created)
+        self.create_images(place_info, place)
 
     def add_arguments(self, parser):
         parser.add_argument('link', type=str, help='Link to JSON with location data')
@@ -61,12 +61,11 @@ class Command(BaseCommand):
         )
         return place, place_created
 
-    def create_images(self, place_info: dict, place: Place, place_created: bool):
+    def create_images(self, place_info: dict, place: Place):
         """
         Создает запись в БД о изображениях места
         :param place_info: словарь с информацией о месте
         :param place: объект модели Place
-        :param place_created: флаг создания новой записи о месте
         :return: None
         """
 
