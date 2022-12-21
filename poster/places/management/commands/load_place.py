@@ -25,6 +25,12 @@ class Command(BaseCommand):
 
         place, place_created = self.create_place(place_info)
 
+        if not place:
+            return None
+        if not place_created:
+            print(f"Обновлена информация о месте: {place_info.get('title')}. Загрузка фотографий не выполнялась")
+            return None
+
         self.create_images(place_info, place, place_created)
 
     def add_arguments(self, parser):
@@ -63,11 +69,6 @@ class Command(BaseCommand):
         :param place_created: флаг создания новой записи о месте
         :return: None
         """
-        if not place:
-            return None
-        if not place_created:
-            print(f"Обновлена информация о месте: {place_info.get('title')}. Загрузка фотографий не выполнялась")
-            return None
 
         for order, img_link in enumerate(place_info.get('imgs', [])):
             image = requests.get(img_link)
@@ -76,4 +77,4 @@ class Command(BaseCommand):
             image = image.content
             filename = os.path.basename(urlparse(img_link).path)
             django_file = ContentFile(image, name=filename)
-            place_image = PlaceImage.objects.create(place=place, image=django_file, order=order)
+            PlaceImage.objects.create(place=place, image=django_file, order=order)
